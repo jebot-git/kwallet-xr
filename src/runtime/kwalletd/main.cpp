@@ -12,6 +12,9 @@
 #include <KLocalizedString>
 
 #include <QApplication>
+#ifdef DOME_FLTK_PROMPTS
+#include "prompt.h"
+#endif
 #include <QCommandLineParser>
 
 #include "kwalletsettings.h"
@@ -24,8 +27,15 @@ static bool isWalletEnabled()
 
 int main(int argc, char **argv)
 {
+#ifdef DOME_FLTK_PROMPTS
+    DomePrompt::hardenProcess();
+#endif
     QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
+#ifdef DOME_FLTK_PROMPTS
+    QCoreApplication application(argc, argv);
+#else
     QApplication application(argc, argv);
+#endif
 
     KAboutData aboutData(QStringLiteral("kwalletd"),
                          i18n("kwalletd"),
@@ -40,7 +50,9 @@ int main(int argc, char **argv)
 
     KAboutData::setApplicationData(aboutData);
 
+#ifndef DOME_FLTK_PROMPTS
     KCrash::initialize();
+#endif
 
     QCommandLineParser parser;
     aboutData.setupCommandLine(&parser);

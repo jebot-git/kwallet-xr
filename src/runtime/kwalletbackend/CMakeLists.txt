@@ -88,3 +88,7 @@ endif(WIN32 AND NOT WINCE)
 install(TARGETS KF6WalletBackend ${KF_INSTALL_TARGETS_DEFAULT_ARGS} LIBRARY NAMELINK_SKIP)
 
 add_subdirectory(tests)
+
+if(DOME_FLTK_PROMPTS)
+    target_link_libraries(KF6WalletBackend DomeWalletPrompts)
+endif()

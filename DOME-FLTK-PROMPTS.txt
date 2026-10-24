@@ -1,0 +1,39 @@
+DomeD credential prompt integration
+
+Default: DOME_FLTK_PROMPTS=ON. The explicit OFF build retains the upstream Qt
+prompt implementation for compatibility; it is not the deployed variant.
+
+The KWallet/Secret Service/PAM protocols and encrypted file formats are retained.
+Unlock, new/repeated password, password-change, migration, errors, confirmations
+and OpenPGP key choice use the existing DomeD FLTK Pinentry helper. The daemons
+use QCoreApplication and do not create Qt windows. Qt/KF libraries remain backend
+dependencies. Screen locking is intentionally outside DomeD's implementation.
+
+The helper path is absolute and fixed at build time. Credential responses pass
+only through a private child-process pipe. Cancellation/error cannot become an
+empty-password success. A helper failure fails closed. Input metadata is escaped,
+reply sizes and waiting time are bounded, temporary secret buffers are wiped,
+core dumping is disabled and a child prompt terminates if its daemon exits.
+Wallet decryption is never replaced by a Polkit authorization decision.
+
+The existing native wallet manager is retained. No new menubar/tray application
+or renderer is introduced. Appearance, fonts, Unicode input, Wayland-first backend
+selection and prompt keyboard handling belong to the shared DomeD FLTK helper,
+in accordance with /home/blux/de-xr/DESIGN_CONVENTIONS. Physical XR presentation
+and shared-helper GPU behavior require the normal compositor/hardware checks;
+private X11 software-display tests do not establish those properties.
+
+The legacy Secret Service bridge also retains freshly created collection proxies,
+announces Locked changes and checks authoritative lock state before returning a
+successful open. Tests exposed stale cached state during creation/cancellation.
+
+Release build (regular user):
+  cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr -DKDE_INSTALL_LIBDIR=lib64 \
+    -DDOME_FLTK_PROMPTS=ON -DDOME_BUILD_PROMPT_TESTS=ON
+  cmake --build build --target ksecretd kwalletd6 dome-prompt-probe
+  ctest --test-dir build/src/runtime/dome --output-on-failure
+
+The isolated integration harness, local Fedora RPM recipe, source patch,
+checksums and boot-install queue are retained in
+/home/blux/de-xr/artifacts/headless-backends-20261023.

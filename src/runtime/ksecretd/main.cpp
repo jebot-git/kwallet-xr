@@ -13,6 +13,9 @@
 #include <KLocalizedString>
 
 #include <QApplication>
+#ifdef DOME_FLTK_PROMPTS
+#include "prompt.h"
+#endif
 #include <QCommandLineParser>
 #include <QIcon>
 #include <QString>
@@ -148,9 +151,18 @@ int main(int argc, char **argv)
     }
 #endif
 
+#ifdef DOME_FLTK_PROMPTS
+    DomePrompt::hardenProcess();
+#endif
     QCoreApplication::setAttribute(Qt::AA_DisableSessionManager);
+#ifdef DOME_FLTK_PROMPTS
+    QCoreApplication app(argc, argv);
+#else
     QApplication app(argc, argv);
+#endif
+#ifndef DOME_FLTK_PROMPTS
     app.setWindowIcon(QIcon::fromTheme(QStringLiteral("kwalletmanager")));
+#endif
 
     // this ksecretd5 program should be able to start with KDE4's ksecretd
     // using ksecretd name would prevent KDBusService unique instance to initialize
@@ -168,7 +180,9 @@ int main(int argc, char **argv)
 
     KAboutData::setApplicationData(aboutdata);
 
+#ifndef DOME_FLTK_PROMPTS
     KCrash::initialize();
+#endif
 
     // BUG 509680: When launched by PAM (hash != nullptr), use Replace so that
     // if a premature D-Bus-activated instance grabbed the bus name, the PAM
@@ -180,7 +194,9 @@ int main(int argc, char **argv)
     aboutdata.setupCommandLine(&cmdParser);
     cmdParser.process(app);
 
+#ifndef DOME_FLTK_PROMPTS
     app.setQuitOnLastWindowClosed(false);
+#endif
 
     // check if kwallet is disabled
     if (!KSecretD::isEnabled()) {

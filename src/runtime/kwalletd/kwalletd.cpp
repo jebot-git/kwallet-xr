@@ -10,7 +10,11 @@
 #include <QDebug>
 
 #include <KLocalizedString>
+#ifdef DOME_FLTK_PROMPTS
+#include "prompt.h"
+#else
 #include <KPasswordDialog>
+#endif
 
 #include "kwalletadaptor.h"
 #include "kwalletsettings.h"
@@ -99,6 +103,11 @@ bool KWalletD::migrateWallet(const QString &sourceWallet, const QString &destWal
     KWallet::Backend backend(sourceWallet);
     backend.open(QByteArray());
     while (!backend.isOpen()) {
+#ifdef DOME_FLTK_PROMPTS
+        auto answer = DomePrompt::password(i18n("Unlock wallet '%1' for migration.", sourceWallet.toHtmlEscaped()));
+        if (!answer.accepted) return false;
+        backend.open(answer.value);
+#else
         KPasswordDialog dlg;
         dlg.setPrompt(i18n("Migrating the wallet \"%1\". Please provide the password to unlock.", sourceWallet));
         dlg.setRevealPasswordMode(KPassword::RevealMode::OnlyNew);
@@ -107,6 +116,7 @@ bool KWalletD::migrateWallet(const QString &sourceWallet, const QString &destWal
             return false;
         }
         backend.open(dlg.password().toUtf8());
+#endif
     }
 
     bool ok = false;

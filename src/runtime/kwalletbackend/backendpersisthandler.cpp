@@ -9,7 +9,14 @@
 #include "kwalletbackend_debug.h"
 
 #include <KLocalizedString>
+#ifdef DOME_FLTK_PROMPTS
+#include "prompt.h"
+#include <KStandardGuiItem>
+namespace WalletMessages = DomePrompt::Messages;
+#else
 #include <KMessageBox>
+namespace WalletMessages = KMessageBox;
+#endif
 #include <QCryptographicHash>
 #include <QFile>
 #include <QIODevice>
@@ -391,7 +398,7 @@ int GpgPersistHandler::write(Backend *wb, QSaveFile &sf, QByteArray &version)
     GpgME::Error err = initGpgME();
     if (err) {
         qCDebug(KWALLETBACKEND_LOG) << "initGpgME returned " << err.code();
-        KMessageBox::error(nullptr,
+        WalletMessages::error(nullptr,
                            i18n("<qt>Error when attempting to initialize OpenPGP while attempting to save the wallet <b>%1</b>. Error code is <b>%2</b>. "
                                 "Please fix your system configuration, then try again.</qt>",
                                 wb->_name.toHtmlEscaped(),
@@ -403,7 +410,7 @@ int GpgPersistHandler::write(Backend *wb, QSaveFile &sf, QByteArray &version)
     std::shared_ptr<GpgME::Context> ctx(GpgME::Context::createForProtocol(GpgME::OpenPGP));
     if (!ctx) {
         qCDebug(KWALLETBACKEND_LOG) << "Cannot setup OpenPGP context!";
-        KMessageBox::error(nullptr,
+        WalletMessages::error(nullptr,
                            i18n("<qt>Error when attempting to initialize OpenPGP while attempting to save the wallet <b>%1</b>. Please fix your system "
                                 "configuration, then try again.</qt>"),
                            wb->_name.toHtmlEscaped());
@@ -457,7 +464,7 @@ int GpgPersistHandler::write(Backend *wb, QSaveFile &sf, QByteArray &version)
     const GpgME::EncryptionResult res = ctx->encrypt(keys, decryptedData, encryptedData, GpgME::Context::None);
     if (res.error()) {
         const int gpgerr = res.error().code();
-        KMessageBox::error(nullptr,
+        WalletMessages::error(nullptr,
                            i18n("<qt>Encryption error while attempting to save the wallet <b>%1</b>. Error code is <b>%2 (%3)</b>. Please fix your system "
                                 "configuration, then try again. This error may occur if you are not using a full trust GPG key. Please ensure you have the "
                                 "secret key for the key you are using.</qt>",
@@ -474,7 +481,7 @@ int GpgPersistHandler::write(Backend *wb, QSaveFile &sf, QByteArray &version)
     encryptedData.seek(0, SEEK_SET);
     while ((bytes = encryptedData.read(buffer, sizeof(buffer) / sizeof(buffer[0]))) > 0) {
         if (sf.write(buffer, bytes) != bytes) {
-            KMessageBox::error(nullptr,
+            WalletMessages::error(nullptr,
                                i18n("<qt>File handling error while attempting to save the wallet <b>%1</b>. Error was <b>%2</b>. Please fix your system "
                                     "configuration, then try again.</qt>",
                                     wb->_name.toHtmlEscaped(),
@@ -496,7 +503,7 @@ int GpgPersistHandler::read(Backend *wb, QFile &sf, WId w)
 {
     GpgME::Error err = initGpgME();
     if (err) {
-        KMessageBox::errorWId(w,
+        WalletMessages::errorWId(w,
                               i18n("<qt>Error when attempting to initialize OpenPGP while attempting to open the wallet <b>%1</b>. Error code is <b>%2</b>. "
                                    "Please fix your system configuration, then try again.</qt>",
                                    wb->_name.toHtmlEscaped(),
@@ -518,7 +525,7 @@ int GpgPersistHandler::read(Backend *wb, QFile &sf, WId w)
 retry_label:
     std::shared_ptr<GpgME::Context> ctx(GpgME::Context::createForProtocol(GpgME::OpenPGP));
     if (nullptr == ctx) {
-        KMessageBox::errorWId(w,
+        WalletMessages::errorWId(w,
                               i18n("<qt>Error when attempting to initialize OpenPGP while attempting to open the wallet <b>%1</b>. Please fix your system "
                                    "configuration, then try again.</qt>",
                                    wb->_name.toHtmlEscaped()));
@@ -536,7 +543,7 @@ retry_label:
         // FIXME the logic here should be a little more elaborate; a dialog box should be used with "retry", "cancel", but also "troubleshoot" with options to
         // show card status and to kill scdaemon
         int userChoice =
-            KMessageBox::warningTwoActionsWId(w,
+            WalletMessages::warningTwoActionsWId(w,
                                               i18n("<qt>Error when attempting to decrypt the wallet <b>%1</b> using GPG. If you're using a SmartCard, "
                                                    "please ensure it's inserted then try again.<br><br>GPG error was <b>%2</b></qt>",
                                                    wb->_name.toHtmlEscaped(),
@@ -544,7 +551,7 @@ retry_label:
                                               i18n("kwalletd GPG backend"),
                                               btnRetry,
                                               KStandardGuiItem::cancel());
-        if (userChoice == KMessageBox::PrimaryAction) {
+        if (userChoice == WalletMessages::PrimaryAction) {
             decryptedData.seek(0, SEEK_SET);
             goto retry_label;
         }
@@ -586,7 +593,7 @@ retry_label:
     }
     ctx->endKeyListing();
     if (wb->_gpgKey.isNull()) {
-        KMessageBox::errorWId(w,
+        WalletMessages::errorWId(w,
                               i18n("<qt>Error when attempting to open the wallet <b>%1</b>. The wallet was encrypted using the GPG Key ID <b>%2</b> but this "
                                    "key was not found on your system.</qt>",
                                    wb->_name.toHtmlEscaped(),

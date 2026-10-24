@@ -473,15 +473,28 @@ bool SecretServiceClient::unlockCollection(const QString &collectionName, bool *
 
     watchCollection(collectionName, ok);
 
-    gboolean locked = secret_collection_get_locked(collection);
+    // Read the authoritative state. A borrowed libsecret proxy can still have
+    // its old Locked value when a synchronous legacy API call is dispatched.
+    auto lockedNow = [&]() {
+        const QString path = QString::fromUtf8(g_dbus_proxy_get_object_path(G_DBUS_PROXY(collection)));
+        QDBusInterface iface(m_serviceBusName, path, QStringLiteral("org.freedesktop.Secret.Collection"), QDBusConnection::sessionBus());
+        const QVariant locked = iface.property("Locked");
+        if (!locked.isValid() || locked.metaType().id() != QMetaType::Bool) {
+            *ok = false;
+            return true;
+        }
+        return locked.toBool();
+    };
+    const bool locked = lockedNow();
+    if (!*ok) return false;
 
     if (locked) {
-        gboolean success = secret_service_unlock_sync(m_service.get(), g_list_append(nullptr, collection), nullptr, nullptr, &error);
+        gint success = secret_service_unlock_sync(m_service.get(), g_list_append(nullptr, collection), nullptr, nullptr, &error);
         *ok = wasErrorFree(&error);
-        if (!success) {
+        if (success <= 0) {
             qCWarning(KWALLETD_LOG) << i18n("Unable to unlock collectionName %1", collectionName);
         }
-        return success;
+        return *ok && success > 0 && !lockedNow();
     }
 
     return true;
@@ -703,9 +716,15 @@ void SecretServiceClient::createCollection(const QString &collectionName, bool *
 
     GError *error = nullptr;
 
-    secret_collection_create_sync(m_service.get(), collectionName.toUtf8().data(), nullptr, SECRET_COLLECTION_CREATE_NONE, nullptr, &error);
+    SecretCollectionPtr collection(secret_collection_create_sync(m_service.get(), collectionName.toUtf8().data(), nullptr, SECRET_COLLECTION_CREATE_NONE, nullptr, &error));
 
-    *ok = wasErrorFree(&error);
+    *ok = wasErrorFree(&error) && bool(collection);
+    // The service's Collections property cache may not have processed its
+    // creation signal yet while this synchronous API call is still running.
+    // Retain the returned owned proxy for the immediately following unlock.
+    if (*ok) {
+        m_openCollections.insert_or_assign(collectionName, std::move(collection));
+    }
 }
 
 void SecretServiceClient::deleteCollection(const QString &collectionName, bool *ok)

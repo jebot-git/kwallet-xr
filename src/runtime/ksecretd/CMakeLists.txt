@@ -49,7 +49,6 @@ ecm_setup_version(${KF_VERSION} VARIABLE_PREFIX KSECRETD
 target_sources(ksecretd PRIVATE
    main.cpp
    ksecretd.cpp
-   kwalletwizard.cpp
    ktimeout.cpp
    kwalletfreedesktopservice.cpp
    kwalletfreedesktopsession.cpp
@@ -78,7 +77,7 @@ ki18n_wrap_ui(ksecretd
 
 kconfig_target_kcfg_file(ksecretd FILE ${CMAKE_SOURCE_DIR}/src/kwalletsettings.kcfg CLASS_NAME KWalletSettings MUTATORS)
 
-if (Gpgmepp_FOUND)
+if (Gpgmepp_FOUND AND NOT DOME_FLTK_PROMPTS)
     target_sources(ksecretd PRIVATE
         knewwalletdialog.cpp
     )
@@ -174,3 +173,11 @@ install( FILES ksecretd.notifyrc DESTINATION  ${KDE_INSTALL_KNOTIFYRCDIR} )
 install( FILES org.kde.ksecretd.desktop DESTINATION ${KDE_INSTALL_APPDIR} )
 install( FILES kwallet.portal DESTINATION ${KDE_INSTALL_DATADIR}/xdg-desktop-portal/portals)
 
+
+if(DOME_FLTK_PROMPTS)
+    target_link_libraries(ksecretd DomeWalletPrompts)
+endif()
+
+if(NOT DOME_FLTK_PROMPTS)
+    target_sources(ksecretd PRIVATE kwalletwizard.cpp)
+endif()

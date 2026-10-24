@@ -16,9 +16,11 @@
 #include "kwalletfreedesktopsession.h"
 #include "kwalletportalsecrets.h"
 #include "kwalletsettings.h"
+#ifndef DOME_FLTK_PROMPTS
 #include "kwalletwizard.h"
+#endif
 
-#ifdef HAVE_GPGMEPP
+#if defined(HAVE_GPGMEPP) && !defined(DOME_FLTK_PROMPTS)
 #include "knewwalletdialog.h"
 #endif
 
@@ -27,7 +29,14 @@
 #include <KConfigGroup>
 #include <KDirWatch>
 #include <KLocalizedString>
+#ifdef DOME_FLTK_PROMPTS
+#include "prompt.h"
+#include <KStandardGuiItem>
+namespace WalletMessages = DomePrompt::Messages;
+#else
 #include <KMessageBox>
+namespace WalletMessages = KMessageBox;
+#endif
 #include <KNewPasswordDialog>
 #include <KNotification>
 #include <KPasswordDialog>
@@ -43,6 +52,10 @@
 
 #ifdef HAVE_GPGMEPP
 #include <gpgme++/key.h>
+#ifdef DOME_FLTK_PROMPTS
+#include <gpgme++/context.h>
+#include <gpgme++/keylistresult.h>
+#endif
 #endif
 
 #include <QApplication>
@@ -283,6 +296,9 @@ int KSecretD::openAsync(const QString &wallet, qlonglong wId, const QDBusConnect
 // Sets up a dialog that will be shown by kwallet.
 void KSecretD::setupDialog(QWidget *dialog, WId wId, bool modal)
 {
+#ifdef DOME_FLTK_PROMPTS
+    Q_UNUSED(dialog); Q_UNUSED(wId); Q_UNUSED(modal);
+#else
     if (wId != 0) {
         // correct, set dialog parent
         dialog->setAttribute(Qt::WA_NativeWindow, true);
@@ -306,6 +322,7 @@ void KSecretD::setupDialog(QWidget *dialog, WId wId, bool modal)
     }
 #endif
     activeDialog = dialog;
+#endif
 }
 
 // If there's a dialog already open and another application tries some
@@ -321,6 +338,9 @@ void KSecretD::setupDialog(QWidget *dialog, WId wId, bool modal)
 // sure the user doesn't overlook the active dialog.
 void KSecretD::checkActiveDialog()
 {
+#ifdef DOME_FLTK_PROMPTS
+
+#else
     if (!activeDialog) {
         return;
     }
@@ -337,6 +357,7 @@ void KSecretD::checkActiveDialog()
         KX11Extras::setOnAllDesktops(window, true);
         KX11Extras::forceActiveWindow(window);
     }
+#endif
 #endif
 }
 
@@ -376,6 +397,9 @@ int KSecretD::internalOpen(const QString &wallet, WId w, bool modal)
 
         KWallet::Backend *b = new KWallet::Backend(wallet);
         QString password;
+#ifdef DOME_FLTK_PROMPTS
+        bool domePasswordProvided = false;
+#endif
         bool emptyPass = false;
         if (KWallet::Backend::exists(wallet)) {
             // this open attempt will set wallet type from the file header,
@@ -401,6 +425,16 @@ int KSecretD::internalOpen(const QString &wallet, WId w, bool modal)
                         delete b;
                         b = new KWallet::Backend(wallet);
                     }
+#ifdef DOME_FLTK_PROMPTS
+                    QString lastError;
+                    while (!b->isOpen()) {
+                        auto answer = DomePrompt::password(i18n("Unlock wallet '%1'.", wallet.toHtmlEscaped()), false, lastError);
+                        if (!answer.accepted) break;
+                        domePasswordProvided = true;
+                        const int result = b->open(answer.value);
+                        if (!b->isOpen()) lastError = i18n("Unable to open the wallet: %1", KWallet::Backend::openRCToString(result));
+                    }
+#else
                     KPasswordDialog *kpd = new KPasswordDialog();
                     kpd->setPrompt(i18n("<qt>KDE has requested to open the wallet '<b>%1</b>'. Please enter the password for this wallet below.</qt>",
                                         wallet.toHtmlEscaped()));
@@ -452,6 +486,7 @@ int KSecretD::internalOpen(const QString &wallet, WId w, bool modal)
                         }
                     }
                     delete kpd;
+#endif
                 } else {
                     emptyPass = true;
                 }
@@ -464,6 +499,37 @@ int KSecretD::internalOpen(const QString &wallet, WId w, bool modal)
             // prompt the user for the new wallet format here
             KWallet::BackendCipherType newWalletType = KWallet::BACKEND_CIPHER_UNKNOWN;
 
+#ifdef DOME_FLTK_PROMPTS
+            GpgME::Key gpgKey;
+            const auto choice = DomePrompt::confirm(i18n("Create wallet '%1'. Choose password or OpenPGP encryption.", wallet.toHtmlEscaped()),
+                                                    i18n("Password encryption"), i18n("OpenPGP encryption"));
+            if (choice == DomePrompt::Choice::Accept) {
+                newWalletType = KWallet::BACKEND_CIPHER_BLOWFISH;
+            } else if (choice == DomePrompt::Choice::Other) {
+                GpgME::initializeLibrary();
+                if (GpgME::checkEngine(GpgME::OpenPGP)) {
+                    DomePrompt::message(i18n("OpenPGP could not be initialized. Check your GPG configuration."));
+                    delete b; return -1;
+                }
+                std::unique_ptr<GpgME::Context> context(GpgME::Context::createForProtocol(GpgME::OpenPGP));
+                if (!context) { delete b; return -1; }
+                context->setKeyListMode(GpgME::Local);
+                GpgME::Error error = context->startKeyListing();
+                while (!error) {
+                    auto candidate = context->nextKey(error);
+                    if (error) break;
+                    if (candidate.isNull() || candidate.isRevoked() || candidate.isExpired() || candidate.isDisabled() || candidate.isInvalid() || !candidate.canEncrypt() || candidate.ownerTrust() != GpgME::Key::Ultimate) continue;
+                    const auto selected = DomePrompt::confirm(i18n("Encrypt wallet '%1' using OpenPGP key %2 (%3)?", wallet.toHtmlEscaped(),
+                        QString::fromLatin1(candidate.primaryFingerprint()), QString::fromUtf8(candidate.userID(0).id()).toHtmlEscaped()), i18n("Use this key"), i18n("Next key"));
+                    if (selected == DomePrompt::Choice::Accept) { gpgKey = candidate; break; }
+                    if (selected == DomePrompt::Choice::Cancel) break;
+                }
+                context->endKeyListing();
+                if (!gpgKey.isNull()) newWalletType = KWallet::BACKEND_CIPHER_GPG;
+                else DomePrompt::message(i18n("No OpenPGP key was selected. Wallet creation was cancelled."));
+            }
+            if (newWalletType == KWallet::BACKEND_CIPHER_UNKNOWN) { delete b; return -1; }
+#else
             std::shared_ptr<KWallet::KNewWalletDialog> newWalletDlg(new KWallet::KNewWalletDialog(wallet, QWidget::find(w)));
             GpgME::Key gpgKey;
             setupDialog(newWalletDlg.get(), (WId)w, true);
@@ -476,12 +542,26 @@ int KSecretD::internalOpen(const QString &wallet, WId w, bool modal)
                 return -1;
             }
 
+#endif
+
             if (newWalletType == KWallet::BACKEND_CIPHER_GPG) {
                 b->setCipherType(newWalletType);
                 b->open(gpgKey);
             } else if (newWalletType == KWallet::BACKEND_CIPHER_BLOWFISH) {
 #endif // HAVE_GPGMEPP
                 b->setCipherType(KWallet::BACKEND_CIPHER_BLOWFISH);
+#ifdef DOME_FLTK_PROMPTS
+                QString lastError;
+                while (!b->isOpen()) {
+                    auto answer = DomePrompt::password(i18n("Choose a password for new wallet '%1'.", wallet.toHtmlEscaped()), true, lastError);
+                    if (!answer.accepted) break;
+                    if (answer.value.isEmpty() && DomePrompt::confirm(i18n("An empty password leaves wallet '%1' without password protection. Create it anyway?", wallet.toHtmlEscaped()),
+                        i18n("Create without password")) != DomePrompt::Choice::Accept) break;
+                    domePasswordProvided = true;
+                    const int result = b->open(answer.value);
+                    if (!b->isOpen()) lastError = i18n("Unable to create the wallet: %1", KWallet::Backend::openRCToString(result));
+                }
+#else
                 KNewPasswordDialog *kpd = new KNewPasswordDialog();
                 KColorScheme colorScheme(QPalette::Active, KColorScheme::View);
                 kpd->setBackgroundWarningColor(colorScheme.background(KColorScheme::NegativeBackground).color());
@@ -517,12 +597,17 @@ int KSecretD::internalOpen(const QString &wallet, WId w, bool modal)
                     }
                 }
                 delete kpd;
+#endif
 #ifdef HAVE_GPGMEPP
             }
 #endif
         }
 
-        if ((b->cipherType() == KWallet::BACKEND_CIPHER_BLOWFISH) && !emptyPass && (password.isNull() || !b->isOpen())) {
+        if ((b->cipherType() == KWallet::BACKEND_CIPHER_BLOWFISH) && !emptyPass && ((password.isNull()
+#ifdef DOME_FLTK_PROMPTS
+             && !domePasswordProvided
+#endif
+            ) || !b->isOpen())) {
             delete b;
             return -1;
         }
@@ -625,7 +710,7 @@ void KSecretD::doTransactionChangePassword(const QString &wallet, qlonglong wId)
     if (!w) {
         handle = doTransactionOpen(wallet, wId, false);
         if (-1 == handle) {
-            KMessageBox::errorWId((WId)wId,
+            WalletMessages::errorWId((WId)wId,
                                   i18n("Unable to open wallet. The wallet must be opened in order to change the password."),
                                   i18n("KDE Wallet Service"));
             return;
@@ -641,13 +726,28 @@ void KSecretD::doTransactionChangePassword(const QString &wallet, qlonglong wId)
     if (w->cipherType() == KWallet::BACKEND_CIPHER_GPG) {
         QString keyID = w->gpgKey().shortKeyID();
         assert(!keyID.isNull());
-        KMessageBox::errorWId((WId)wId,
+        WalletMessages::errorWId((WId)wId,
                               i18n("<qt>The <b>%1</b> wallet is encrypted using GPG key <b>%2</b>. Please use <b>GPG</b> tools (such "
                                    "as <b>kleopatra</b>) to change the passphrase associated to that key.</qt>",
                                    wallet.toHtmlEscaped(),
                                    keyID));
     } else {
 #endif
+#ifdef DOME_FLTK_PROMPTS
+        auto answer = DomePrompt::password(i18n("Choose a new password for wallet '%1'.", wallet.toHtmlEscaped()), true);
+        if (answer.accepted && (!answer.value.isEmpty() || DomePrompt::confirm(i18n("Remove password protection from wallet '%1'?", wallet.toHtmlEscaped()),
+            i18n("Remove password")) == DomePrompt::Choice::Accept)) {
+            w->setPassword(answer.value);
+            const int result = w->close(true);
+            if (result < 0) {
+                DomePrompt::message(i18n("Error re-encrypting the wallet. Password was not changed."));
+                reclose = true;
+            } else if (w->open(answer.value) < 0) {
+                DomePrompt::message(i18n("Error reopening the wallet."));
+                reclose = true;
+            }
+        }
+#else
         QPointer<KNewPasswordDialog> kpd = new KNewPasswordDialog();
         kpd->setPrompt(i18n("<qt>Please choose a new password for the wallet '<b>%1</b>'.</qt>", wallet.toHtmlEscaped()));
         kpd->setWindowTitle(i18n("KDE Wallet Service"));
@@ -661,12 +761,12 @@ void KSecretD::doTransactionChangePassword(const QString &wallet, qlonglong wId)
                 w->setPassword(p.toUtf8());
                 int rc = w->close(true);
                 if (rc < 0) {
-                    KMessageBox::errorWId((WId)wId, i18n("Error re-encrypting the wallet. Password was not changed."), i18n("KDE Wallet Service"));
+                    WalletMessages::errorWId((WId)wId, i18n("Error re-encrypting the wallet. Password was not changed."), i18n("KDE Wallet Service"));
                     reclose = true;
                 } else {
                     rc = w->open(p.toUtf8());
                     if (rc < 0) {
-                        KMessageBox::errorWId((WId)wId, i18n("Error reopening the wallet. Data may be lost."), i18n("KDE Wallet Service"));
+                        WalletMessages::errorWId((WId)wId, i18n("Error reopening the wallet. Data may be lost."), i18n("KDE Wallet Service"));
                         reclose = true;
                     }
                 }
@@ -674,6 +774,7 @@ void KSecretD::doTransactionChangePassword(const QString &wallet, qlonglong wId)
         }
 
         delete kpd;
+#endif
 #ifdef HAVE_GPGMEPP
     }
 #endif
@@ -974,7 +1075,7 @@ void KSecretD::notifyFailures()
 {
     if (!_showingFailureNotify) {
         _showingFailureNotify = true;
-        KMessageBox::information(nullptr,
+        WalletMessages::information(nullptr,
                                  i18n("There have been repeated failed attempts to gain access to a wallet. An application may be misbehaving."),
                                  i18n("KDE Wallet Service"));
         _showingFailureNotify = false;

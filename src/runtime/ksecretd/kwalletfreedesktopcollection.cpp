@@ -359,6 +359,12 @@ void KWalletFreedesktopCollection::onWalletChangeState(int handle)
 
     m_handle = handle;
 
+    // Secret Service clients cache Locked. CollectionChanged alone does not
+    // invalidate the property, so notify it when the backend handle changes.
+    QVariantMap state;
+    state.insert(QStringLiteral("Locked"), locked());
+    onPropertiesChanged(state);
+
     const QStringList folderList = backend()->folderList(m_handle);
     for (const QString &folder : folderList) {
         const QStringList entries = backend()->entryList(m_handle, folder);
