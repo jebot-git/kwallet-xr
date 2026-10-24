@@ -1,0 +1,816 @@
+# Uyghur translation for kwalletd.
+# Copyright (C) YEAR This_file_is_part_of_KDE
+# This file is distributed under the same license as the PACKAGE package.
+# Sahran <sahran.ug@gmail.com>, 2011.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: kwalletd\n"
+"Report-Msgid-Bugs-To: https://bugs.kde.org\n"
+"POT-Creation-Date: 2026-09-02 00:40+0000\n"
+"PO-Revision-Date: 2026-05-31 19:57-0400\n"
+"Last-Translator: Abduqadir Abliz <sahranbay@gmail.com>\n"
+"Language-Team: Uyghur Computer Science Association <UKIJ@yahoogroups.com>\n"
+"Language: ug\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Poedit 3.9\n"
+
+#, kde-format
+msgctxt "NAME OF TRANSLATORS"
+msgid "Your names"
+msgstr "ئابدۇقادىر ئابلىز، غەيرەت كەنجى"
+
+#, kde-format
+msgctxt "EMAIL OF TRANSLATORS"
+msgid "Your emails"
+msgstr "sahranbay@gmail.com, gheyret@gmail.com"
+
+#: ksecretd/knewwalletdialog.cpp:49
+#, kde-format
+msgid ""
+"<qt>KDE has requested to create a new wallet named '<b>%1</b>'. This is used "
+"to store sensitive data in a secure fashion. Please choose the new wallet's "
+"type below or click cancel to deny the application's request.</qt>"
+msgstr ""
+"<qt>يېڭى بىر ھەميان «<b>%1</b>» نى قۇرۇشنى KDE تەلەپ قىلىۋاتىدۇ. بۇ سەزگۈر "
+"ئۇچۇرنى بىخەتەر ساقلاشنىڭ بىر خىل ئۇسۇلى. تۆۋەندە ھەميان تۈرىنى تاللاڭ ياكى "
+"«ۋاز كەچ» نى چېكىپ پىروگراممىنىڭ ئىلتىماسنى رەت قىلىڭ.</qt>"
+
+#: ksecretd/knewwalletdialog.cpp:117 ksecretd/knewwalletdialog.cpp:124
+#: ksecretd/kwalletwizard.cpp:151 ksecretd/kwalletwizard.cpp:157
+#, kde-format
+msgid ""
+"The GpgME library failed to initialize for the OpenPGP protocol. Please "
+"check your system's configuration then try again."
+msgstr ""
+"GpgME ئامبىرى OpenPGP كېلىشىمىنى دەسلەپلەشتۈرەلمىدى. سىستېما سەپلىمىڭىزنى "
+"تەكشۈرۈپ ئاندىن قايتا سىناڭ."
+
+#: ksecretd/knewwalletdialog.cpp:145
+#, kde-format
+msgid ""
+"Seems that your system has no keys suitable for encryption. Please set-up at "
+"least one encryption key, then try again."
+msgstr ""
+"سىستېمىڭىزدا شىفىرلاشقا ئىشلىتىشكە ماس كېلىدىغان ئاچقۇچ يوقتەك قىلىدۇ. كەم "
+"دېگەندە بىر شىفىرلاش ئاچقۇچى تەڭشەپ ئاندىن قايتا سىناڭ."
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: ksecretd/knewwalletdialoggpg.ui:17
+#, kde-format
+msgid "Please select the signing key from the list below:"
+msgstr "تۆۋەندىكى تىزىمدىن ئىمزا ئاچقۇچى تاللاڭ:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: ksecretd/knewwalletdialoggpg.ui:24
+#, kde-format
+msgid ""
+"<html><head/><body><p><span style=\" font-weight:600;\">NOTE:</span> this "
+"list shows only &quot;ultimate-level&quot; trusted keys</p></body></html>"
+msgstr ""
+"<html><head/><body><p><span style=\" font-weight:600;\">ئەسكەرتىش:</span>بۇ "
+"تىزىم پەقەت «مۇتلەق دەرىجىدىكى» ئىشەنچلىك ئاچقۇچنى ئۆز ئىچىگە ئالىدۇ</p></"
+"body></html>"
+
+#. i18n: ectx: property (text), widget (QTableWidget, listCertificates)
+#: ksecretd/knewwalletdialoggpg.ui:59
+#, kde-format
+msgid "Name"
+msgstr "ئاتى"
+
+#. i18n: ectx: property (text), widget (QTableWidget, listCertificates)
+#: ksecretd/knewwalletdialoggpg.ui:64
+#, kde-format
+msgid "E-Mail"
+msgstr "ئېلخەت"
+
+#. i18n: ectx: property (text), widget (QTableWidget, listCertificates)
+#: ksecretd/knewwalletdialoggpg.ui:69
+#, kde-format
+msgid "Key-ID"
+msgstr "ئاچقۇچ كىملىكى"
+
+#. i18n: ectx: property (comment), widget (KTitleWidget, ktitlewidget)
+#: ksecretd/knewwalletdialogintro.ui:17 ksecretd/kwalletwizardpageintro.ui:17
+#, kde-format
+msgid "The KDE Wallet System"
+msgstr "KDE ھەميان سىستېمىسى"
+
+#. i18n: ectx: property (text), widget (QLabel, labelIntro)
+#: ksecretd/knewwalletdialogintro.ui:30
+#, no-c-format, kde-format
+msgid ""
+"<html><head/><body><p>The application '<span style=\" font-weight:600;\">%1</"
+"span>' has requested to open the KDE wallet. This is used to store sensitive "
+"data in a secure fashion. Please choose the new wallet's type below or click "
+"cancel to deny the application's request.</p></body></html>"
+msgstr ""
+"<html><head/><body><p> <span style=\" font-weight:600;\">%1</span> "
+"پىروگرامما KDE ھەمياننى ئېچىشنى ئىلتىماس قىلدى. بۇ سەزگۈر ئۇچۇرنى بىخەتەر "
+"ساقلاشنىڭ بىر خىل ئۇسۇلى. تۆۋەندە يېڭى ھەميان تۈرىنى تاللاڭ ياكى «ۋاز كەچ» "
+"نى چېكىپ پىروگراممىنىڭ ئىلتىماسنى رەت قىلىڭ.</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QRadioButton, radioBlowfish)
+#. i18n: ectx: property (text), widget (QRadioButton, _radioBlowfish)
+#: ksecretd/knewwalletdialogintro.ui:66
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:68
+#, kde-format
+msgid "Classic, blowfish encrypted file"
+msgstr "ئەنئەنىۋى ئۇسۇلدا، blowfish شىفىرلىغان ھۆججەت"
+
+#. i18n: ectx: property (text), widget (QRadioButton, radioGpg)
+#. i18n: ectx: property (text), widget (QRadioButton, _radioGpg)
+#: ksecretd/knewwalletdialogintro.ui:73
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:55
+#, kde-format
+msgid "Use GPG encryption, for better protection"
+msgstr "GPG شىفىرلاش ئۇسۇلى ئىشلىتىلسە تېخىمۇ بىخەتەر"
+
+#: ksecretd/ksecretd.cpp:405
+#, kde-format
+msgid ""
+"<qt>KDE has requested to open the wallet '<b>%1</b>'. Please enter the "
+"password for this wallet below.</qt>"
+msgstr ""
+"<qt>ھەميان «<b>%1</b>» نى ئېچىشنى KDE تەلەپ قىلدى. بۇ ھەمياننىڭ ئىمىنى "
+"كىرگۈزۈڭ.</qt>"
+
+#. i18n( "&Open" ), "wallet-open"));
+#: ksecretd/ksecretd.cpp:413 ksecretd/ksecretd.cpp:500
+#: ksecretd/ksecretd.cpp:630 ksecretd/ksecretd.cpp:653
+#: ksecretd/ksecretd.cpp:664 ksecretd/ksecretd.cpp:669
+#: ksecretd/ksecretd.cpp:979 ksecretd/main.cpp:159 ksecretd/main.cpp:161
+#, kde-format
+msgid "KDE Wallet Service"
+msgstr "KDE ھەميان مۇلازىمىتى"
+
+#: ksecretd/ksecretd.cpp:427
+#, kde-format
+msgid "An application has requested to open a wallet (%1)."
+msgstr "پىروگرامما ھەميان (%1) ئېچىشنى ئىلتىماس قىلدى."
+
+#: ksecretd/ksecretd.cpp:428
+#, kde-format
+msgctxt ""
+"Text of a button for switching to the (unnamed) application requesting a "
+"password"
+msgid "Switch there"
+msgstr "بۇ يەرگە ئالماشتۇر"
+
+#: ksecretd/ksecretd.cpp:444 ksecretd/ksecretd.cpp:510
+#, kde-format
+msgid ""
+"<qt>Error opening the wallet '<b>%1</b>'. Please try again.<br />(Error code "
+"%2: %3)</qt>"
+msgstr ""
+"<qt>ھەميان «<b>%1</b>» نى ئېچىشتا خاتالىق كۆرۈلدى. قايتا سىناڭ.<br /"
+">(خاتالىق كودى %2: %3)</qt>"
+
+#: ksecretd/ksecretd.cpp:491
+#, kde-format
+msgid ""
+"KDE has requested to open the wallet. This is used to store sensitive data "
+"in a secure fashion. Please enter a password to use with this wallet or "
+"click cancel to deny the application's request."
+msgstr ""
+"ھەمياننى ئېچىشنى KDE تەلەپ قىلىۋاتىدۇ. بۇ ھەمياندا ئىنتايىن مۇھىم سانلىق "
+"مەلۇماتلار ساقلانغان. ھەمياننى ئىشلىتىش ئۈچۈن ئىم كىرگۈزۈڭ ياكى «ۋاز كەچ» نى "
+"چېكىپ پىروگراممىنىڭ ئىلتىماسىنى رەت قىلىڭ."
+
+#: ksecretd/ksecretd.cpp:496
+#, kde-format
+msgid ""
+"<qt>KDE has requested to create a new wallet named '<b>%1</b>'. Please "
+"choose a password for this wallet, or cancel to deny the application's "
+"request.</qt>"
+msgstr ""
+"<qt>يېڭى بىر ھەميان «<b>%1</b>» نى قۇرۇشنى KDE تەلەپ قىلىۋاتىدۇ. ھەميانغا "
+"ئىم بېكىتىڭ ياكى «ۋاز كەچ» نى چېكىپ پىروگراممىنىڭ ئىلتىماسنى رەت قىلىڭ.</qt>"
+
+#: ksecretd/ksecretd.cpp:629
+#, kde-format
+msgid ""
+"Unable to open wallet. The wallet must be opened in order to change the "
+"password."
+msgstr ""
+"ھەمياننى ئاچقىلى بولمىدى. ئىمنى ئۆزگەرتىش ئۈچۈن ھەميان چوقۇم ئېچىلىشى كېرەك."
+
+#: ksecretd/ksecretd.cpp:645
+#, kde-format
+msgid ""
+"<qt>The <b>%1</b> wallet is encrypted using GPG key <b>%2</b>. Please use "
+"<b>GPG</b> tools (such as <b>kleopatra</b>) to change the passphrase "
+"associated to that key.</qt>"
+msgstr ""
+"<qt>بۇ <b>%1</b> ھەميان GPG ئاچقۇچى <b>%2</b> دا شىفىرلانغان. <b>GPG</b> "
+"قورالى (<b>kleopatra</b> غا ئوخشاش) ئارقىلىق شىفىرلىق ئاچقۇچنىڭ ئىم "
+"ئىبارىسىنى ئۆزگەرتىڭ.</qt>"
+
+#: ksecretd/ksecretd.cpp:652
+#, kde-format
+msgid "<qt>Please choose a new password for the wallet '<b>%1</b>'.</qt>"
+msgstr "<qt>يېڭى ھەميان «<b>%1</b>» غا يېڭى ئىم بېكىتىڭ.</qt>"
+
+#: ksecretd/ksecretd.cpp:664
+#, kde-format
+msgid "Error re-encrypting the wallet. Password was not changed."
+msgstr "ھەمياننى قايتا شىفىرلاشتا خاتالىق كۆرۈلدى. ئىم ئۆزگەرتىلمىدى."
+
+#: ksecretd/ksecretd.cpp:669
+#, kde-format
+msgid "Error reopening the wallet. Data may be lost."
+msgstr ""
+"ھەمياننى قايتا ئېچىشتا خاتالىق كۆرۈلدى. سانلىق مەلۇماتلار يوقاپ كېتىشى "
+"مۇمكىن."
+
+#: ksecretd/ksecretd.cpp:978
+#, kde-format
+msgid ""
+"There have been repeated failed attempts to gain access to a wallet. An "
+"application may be misbehaving."
+msgstr ""
+"مەغلۇپ بولغان ھەمياننى زىيارەت قىلىش مەشغۇلاتى تەكرارلىنىۋاتىدۇ. بىرەر "
+"پىروگرامما خاتا مەشغۇلات قىلىۋاتقان بولۇشى مۇمكىن."
+
+#: ksecretd/kwalletwizard.cpp:40
+#, kde-format
+msgid "KWallet"
+msgstr "KWallet"
+
+#: ksecretd/kwalletwizard.cpp:272
+#, kde-format
+msgid "<qt>Password is empty.  <b>(WARNING: Insecure)</b></qt>"
+msgstr "<qt>ئىم بوش. <b>(ئاگاھلاندۇرۇش: بىخەتەر ئەمەس)</b></qt>"
+
+#: ksecretd/kwalletwizard.cpp:274
+#, kde-format
+msgid "Passwords match."
+msgstr "ئىم ماس كەلدى."
+
+#: ksecretd/kwalletwizard.cpp:277
+#, kde-format
+msgid "Passwords do not match."
+msgstr "ئىم ماس كەلمىدى."
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel2_3)
+#: ksecretd/kwalletwizardpageexplanation.ui:17
+#, kde-format
+msgid ""
+"<html><head/><body><p>The KDE Wallet system stores your data in a <span "
+"style=\" font-style:italic;\">wallet</span> file on your local hard disk. "
+"The data is only written in the encrypted form of your choice - blowfish "
+"algorithm with your password as the key or using a GPG encryption key. When "
+"a wallet is opened, the wallet manager application will launch and display "
+"an icon in the system tray. You can use this application to manage all of "
+"your wallets. It even permits you to drag wallets and wallet contents, "
+"allowing you to easily copy a wallet to a remote system.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>بۇ KDE ھەميان سىستېمىسى سانلىق مەلۇماتىڭىزنى يەرلىك "
+"قاتتىق دىسكىدىكى <span style=\" font-style:italic;\">ھەميان</span> ھۆججىتىدە "
+"ساقلايدۇ. ھۆججەتتىكى بارلىق سانلىق مەلۇمات سىز تاللىغان شىفىرلاش ئۇسۇلىدا "
+"blowfish ھېسابلاش ئۇسۇلىدا بىر تەرەپ قىلىنغان ئىمنى ئاچقۇچ سۈپىتىدە "
+"ئىشلىتىدۇ ياكى GPG شىفىرلاش ئاچقۇچىنى ئىشلىتىدۇ. ھەميان ئېچىلغاندا، ھەميان "
+"باشقۇرۇش پىروگراممىسى ئۆزلۈكىدىن قوزغىلىپ، سىستېما قونداقتا سىنبەلگىسى "
+"كۆرۈنىدۇ، سىز ئۇ پىروگراممىدا ھەممە ھەميانلىرىڭىزنى باشقۇرالايسىز. ھەميان "
+"باشقۇرغۇچ ھەميان ۋە ھەميان مەزمۇنى نى سۆرەپ تاشلاشنى قوللايدۇ، ھەمياننى "
+"يىراقتىكى سىستېمىغا ئاسانلا كۆچۈرۈشكە يول قويىدۇ.</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label_3)
+#: ksecretd/kwalletwizardpagegpgkey.ui:24
+#, kde-format
+msgid ""
+"<html><head/><body><p>The GPG-based wallet use a GPG encryption key to "
+"securely encrypt data on disk. The key must be available when decrypting is "
+"needed or your wallet will not be accessible. For example, if you choose a "
+"SmartCard-based encryption key, the GPG system will prompt you to enter it "
+"and its associated PIN when attempting to open the wallet. <span style=\" "
+"font-weight:600;\">NOTE:</span> this list contains only &quot;ultimate-"
+"level&quot; trusted keys.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>GPG ئاساسىدىكى ھەميان GPG شىفىرلاش ئاچقۇچى ئارقىلىق "
+"دىسكىغا يازىدىغان سانلىق مەلۇماتنى شىفىرلايدۇ. بۇ خىل ھەمياننى ئېچىشتا "
+"شىفىرلىق ئاچقۇچ تەمىنلەش كېرەك بولمىسا ھەمياننى ئاچقىلى بولمايدۇ. ئىدراكلىق "
+"كارتا ئاساسىدىكى شىفىرلاش ئاچقۇچىنى مىسال ئالغاندا، GPG سىستېمىسى ھەمياننى "
+"ئاچىدىغان چاغدا شىفىرلىق ئاچقۇچ ۋە مۇناسىۋەتلىك PIN نى كىرگۈزۈشنى تەلەپ "
+"قىلىدۇ.<span style=\" font-weight:600;\">ئەسكەرتىش:</span>بۇ تىزىم پەقەت "
+"«مۇتلەق دەرىجىدىكى» ئىشەنچلىك ئاچقۇچنى ئۆز ئىچىگە ئالىدۇ</p></body></html>"
+
+#. i18n: ectx: property (text), widget (QLabel, label)
+#: ksecretd/kwalletwizardpagegpgkey.ui:42
+#, kde-format
+msgid "Select encryption GPG key:"
+msgstr "شىفىرلاشتىكى GPG  ئاچقۇچى تاللىنىدۇ:"
+
+#. i18n: ectx: property (text), widget (QLabel, label_2)
+#: ksecretd/kwalletwizardpagegpgkey.ui:81
+#, kde-format
+msgid ""
+"Unable to locate at least one <b>encrypting GPG key</b>. KDE Wallet needs "
+"such <b>encrypting key</b> to securely store passwords or other sensitive "
+"data on disk. If you still want to setup a GPG-based wallet, then cancel "
+"this wizard, set-up an <b>encrypting GPG key</b>, then retry this assistant. "
+"Otherwise, you may still click back, then choose a classic, blowfish "
+"encrypted file format on the previous page."
+msgstr ""
+"كەم دېگەندە بىر <b>شىفىرلاش GPG ئاچقۇچى</b> نىڭ ئورنىنى بېكىتەلمىدى. KDE "
+"ھەميان بۇ خىل <b>شىفىرلاش ئاچقۇچى</b> نى ئىشلىتىپ ئىم ياكى باشقا سەزگۈر "
+"ئۇچۇرلارنى دىسكىدا ساقلايدۇ. ئەگەر GPG ئاساسىدىكى ھەمياننى تەڭشىمەكچى "
+"بولسىڭىز، بۇ يېتەكچىدىن ۋاز كېچىپ، <b>شىفىرلاش GPG ئاچقۇچى</b> دىن بىرنى "
+"تەڭشەپ ئاندىن بۇ يېتەكچىنى قايتا ئىجرا قىلىڭ. ئەگەر GPG نى تەڭشەشنى "
+"خالىمىسىڭىز، قايت توپچىنى چېكىپ، ئالدىنقى بەتتىكى ئەنئەنىۋى blowfish "
+"شىفىرلىق ھۆججەت پىچىمىنى تاللاڭ."
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel2)
+#: ksecretd/kwalletwizardpageintro.ui:30
+#, kde-format
+msgid ""
+"Welcome to KWallet, the KDE Wallet System.  KWallet allows you to store your "
+"passwords and other personal information on disk in an encrypted file, "
+"preventing others from viewing the information.  This wizard will tell you "
+"about KWallet and help you configure it for the first time."
+msgstr ""
+"KDE ھەميان سىستېمىسى KWallet قا خۇش كەلدىڭىز. KWallet ئىم ۋە باشقا شەخسىي "
+"ئۇچۇرلىرىڭىزنى يەرلىك دىسكىغا شىفىرلانغان ھۆججەتكە ساقلاپ باشقىلارنىڭ "
+"ئۇچۇرنى كۆرۈشىنىڭ ئالدىنى ئالىدۇ. بۇ يېتەكچى KWallet ھەققىدىكى ئۇچۇرلارنى "
+"تونۇشتۇرىدۇ ۋە  تۇنجى قېتىملىق سەپلىشىڭىزگە ياردەم بېرىدۇ."
+
+#. i18n: ectx: property (text), widget (QRadioButton, _basic)
+#: ksecretd/kwalletwizardpageintro.ui:69
+#, kde-format
+msgid "&Basic setup (recommended)"
+msgstr "ئاساسىي تەڭشەك(تەۋسىيە قىلىنىدۇ)(&B)"
+
+#. i18n: ectx: property (text), widget (QRadioButton, _advanced)
+#: ksecretd/kwalletwizardpageintro.ui:79
+#, kde-format
+msgid "&Advanced setup"
+msgstr "ئالىي تەڭشەك(&A)"
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel1_3)
+#: ksecretd/kwalletwizardpageoptions.ui:16
+#, kde-format
+msgid ""
+"The KDE Wallet system allows you to control the level of security of your "
+"personal data.  Some of these settings do impact usability.  While the "
+"default settings are generally acceptable for most users, you may wish to "
+"change some of them.  You may further tune these settings from the KWallet "
+"control module."
+msgstr ""
+"KDE ھەميان سىستېمىسى شەخسىي ئۇچۇرلىرىڭىزنىڭ بىخەتەرلىك دەرىجىسىنى "
+"تىزگىنلىشىڭىزگە يول قويىدۇ. كۆڭۈلدىكى تەڭشەك زور كۆپچىلىك ئىشلەتكۈچىلەرگە "
+"ماس كېلىدۇ، تەڭشەكنى ئۆزىڭىزمۇ ئۆزگەرتەلەيسىز. سىز KWallet تىزگىنلەش "
+"بۆلىكىدىن بۇ تەڭشەكلەرنى تەڭشىيەلەيسىز."
+
+#. i18n: ectx: property (text), widget (QCheckBox, _closeIdle)
+#: ksecretd/kwalletwizardpageoptions.ui:48
+#, kde-format
+msgid "Automatically close idle wallets"
+msgstr "بىكار ھەمياننى ئۆزلۈكىدىن ياپ"
+
+#. i18n: ectx: property (text), widget (QCheckBox, _networkWallet)
+#: ksecretd/kwalletwizardpageoptions.ui:55
+#, kde-format
+msgid "Store network passwords and local passwords in separate wallet files"
+msgstr "تور ئىم ۋە يەرلىك ئىم ئۇچۇرىنى باشقا-باشقا ھەميان ھۆججىتىگە ساقلا"
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel3)
+#: ksecretd/kwalletwizardpagepassword.ui:16
+#, kde-format
+msgid ""
+"Various applications may attempt to use the KDE wallet to store passwords or "
+"other information such as web form data and cookies.  If you would like "
+"these applications to use the wallet, you must enable it now and choose a "
+"password.  The password you choose <i>cannot</i> be recovered if it is lost, "
+"and will allow anyone who knows it to obtain all the information contained "
+"in the wallet."
+msgstr ""
+"نۇرغۇن پىروگرامما KDE ھەمياندا تور بەت جەدۋىلى ۋە ساقلانما ئۇچۇرىغا ئوخشاش "
+"سانلىق مەلۇمات، ئىم ياكى باشقا ئۇچۇرلارنى ساقلاشنى سىنىشى مۇمكىن. ئەگەر "
+"پىروگراممىنىڭ ھەميان ئىشلىتىشىگە يول قويسىڭىز، ھەمياننى ھازىرلا قوزغىتىپ، "
+"شىفىر تاللاڭ. سىز تاللىغان ئىمنى ئېھتىيات بىلەن ساقلاڭ، بۇ ئىم يوقالسا "
+"ئەسلىگە قايتۇرغىلى <i>بولمايدۇ</i>، ئۇنىڭ ئۈستىگە باشقىلار ئىم ئۇچۇرىغا "
+"ئېرىشسە ھەمياندىكى ھەممە ئۇچۇرنى قولغا كەلتۈرەلەيدۇ."
+
+#. i18n: ectx: property (text), widget (QCheckBox, _useWallet)
+#: ksecretd/kwalletwizardpagepassword.ui:29
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:30
+#, kde-format
+msgid "Yes, I wish to use the KDE wallet to store my personal information."
+msgstr "ھەئە، خۇسۇسىي ئۇچۇرلىرىمنى KDE ھەميانىدا ساقلىغۇم بار."
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel1_3)
+#: ksecretd/kwalletwizardpagepassword.ui:88
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:106
+#, kde-format
+msgid "Enter a new password:"
+msgstr "يېڭى ئىم كىرگۈزۈلىدۇ:"
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel2_3)
+#: ksecretd/kwalletwizardpagepassword.ui:104
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:122
+#, kde-format
+msgid "Verify password:"
+msgstr "ئىم جەزملەڭ:"
+
+#. i18n: ectx: property (text), widget (QLabel, textLabel3)
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:17
+#, kde-format
+msgid ""
+"<html><head/><body><p>Various applications may attempt to use the KDE wallet "
+"to store passwords or other information such as web form data and cookies. "
+"If you would like these applications to use the wallet, you must enable it "
+"now and choose method for its encryption.</p><p>GPG method is more secure, "
+"but you must have configured at least one encrypting key on your system.</"
+"p><p>If you choose the classic format, be warned that the password you "
+"choose <span style=\" font-style:italic;\">cannot</span> be recovered if it "
+"is lost, and will allow anyone who knows it to obtain all the information "
+"contained in the wallet.</p></body></html>"
+msgstr ""
+"<html><head/><body><p>نۇرغۇن پىروگرامما KDE ھەمياندا تور بەت جەدۋىلى ۋە "
+"ساقلانما ئۇچۇرىغا ئوخشاش سانلىق مەلۇمات، ئىم ياكى باشقا ئۇچۇرلارنى ساقلاشنى "
+"سىنىشى مۇمكىن. ئەگەر پىروگراممىنىڭ ھەميان ئىشلىتىشىگە يول قويسىڭىز، ھەمياننى "
+"ھازىرلا قوزغىتىپ، شىفىرلاش ئۇسۇلىنى تاللاڭ.</p><p>GPG ئۇسۇلى تېخىمۇ بىخەتەر "
+"ئەمما سىستېمىدا كەم دېگەندە بىر شىفىرلىق ئاچقۇچ سەپلىشىڭىز كېرەك.</"
+"p><p>ئەگەر ئەنئەنىۋى پىچىمنى تاللىسىڭىز، دىققەت قىلىڭكى، تاللىغان ئىمنى "
+"ئېھتىيات بىلەن ساقلاڭ، بۇ ئىم يوقالسا ئەسلىگە قايتۇرغىلى <span style=\" font-"
+"style:italic;\">بولمايدۇ</span>، ئۇنىڭ ئۈستىگە باشقىلار ئىم ئۇچۇرىغا ئېرىشسە "
+"ھەمياندىكى ھەممە ئۇچۇرنى قولغا كەلتۈرەلەيدۇ.</p></body></html>"
+
+#. i18n: ectx: property (title), widget (QGroupBox, _groupBox)
+#: ksecretd/kwalletwizardpagepasswordgpg.ui:46
+#, kde-format
+msgid "What kind of encryption do you wish?"
+msgstr "قانداق شىفىرلاش ئۇسۇلىنى ئىشلىتىسىز؟"
+
+#: ksecretd/main.cpp:163
+#, kde-format
+msgid "(C) 2002-2025, The KDE Developers"
+msgstr "(C) 2002-2025, KDE ئىجادىيەتچىلىرى"
+
+#: ksecretd/main.cpp:164
+#, kde-format
+msgid "Valentin Rusu"
+msgstr "Valentin Rusu"
+
+#: ksecretd/main.cpp:164
+#, kde-format
+msgid "Former Maintainer, GPG backend support"
+msgstr "سابىق ئاسرىغۇچى، GPG ئارقا ئۇچ قوللاش"
+
+#: ksecretd/main.cpp:165
+#, kde-format
+msgid "Michael Leupold"
+msgstr "Michael Leupold"
+
+#: ksecretd/main.cpp:165
+#, kde-format
+msgid "Former Maintainer"
+msgstr "سابىق ئاسرىغۇچى"
+
+#: ksecretd/main.cpp:166
+#, kde-format
+msgid "George Staikos"
+msgstr "George Staikos"
+
+#: ksecretd/main.cpp:166
+#, kde-format
+msgid "Former maintainer"
+msgstr "سابىق ئاسرىغۇچى"
+
+#: ksecretd/main.cpp:167
+#, kde-format
+msgid "Thiago Maceira"
+msgstr "Thiago Maceira"
+
+#: ksecretd/main.cpp:167
+#, kde-format
+msgid "D-Bus Interface"
+msgstr "D-Bus ئارايۈزى"
+
+#: kwalletbackend/backendpersisthandler.cpp:395
+#, kde-format
+msgid ""
+"<qt>Error when attempting to initialize OpenPGP while attempting to save the "
+"wallet <b>%1</b>. Error code is <b>%2</b>. Please fix your system "
+"configuration, then try again.</qt>"
+msgstr ""
+"<qt>OpenPGP نى دەسلەپلەشتۈرۈپ، <b>%1</b> ھەمياننى ساقلىماقچى بولغاندا "
+"خاتالىق كۆرۈلدى. خاتالىق كودى <b>%2</b>. سىستېما سەپلىمىسىنى ئوڭشاپ ئاندىن "
+"قايتا سىناڭ.</qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:407
+#, kde-format
+msgid ""
+"<qt>Error when attempting to initialize OpenPGP while attempting to save the "
+"wallet <b>%1</b>. Please fix your system configuration, then try again.</qt>"
+msgstr ""
+"<qt>OpenPGP نى دەسلەپلەشتۈرۈپ، <b>%1</b> ھەمياننى ساقلىماقچى بولغاندا "
+"خاتالىق كۆرۈلدى. سىستېما سەپلىمىسىنى ئوڭشاپ ئاندىن قايتا سىناڭ.</qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:461
+#, kde-format
+msgid ""
+"<qt>Encryption error while attempting to save the wallet <b>%1</b>. Error "
+"code is <b>%2 (%3)</b>. Please fix your system configuration, then try "
+"again. This error may occur if you are not using a full trust GPG key. "
+"Please ensure you have the secret key for the key you are using.</qt>"
+msgstr ""
+"<qt><b>%1</b> ھەمياننى ساقلىماقچى بولغاندا شىفىرلاش خاتالىقى كۆرۈلدى. "
+"خاتالىق كودى <b>%2 (%3)</b>. سىستېما سەپلىمىسىنى ئوڭشاپ ئاندىن قايتا سىناڭ. "
+"ئەگەر تولۇق ئىشەنچلىك GPG ئاچقۇچى ئىشلەتمىگەندە بۇ خىل خاتالىق يۈز بېرىشى "
+"مۇمكىن. ئىشلىتىۋاتقان شىفىرلىق ئاچقۇچنىڭ سىزدە خۇسۇسىي ئاچقۇچى بارلىقىنى "
+"جەزملەڭ.</qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:478
+#, kde-format
+msgid ""
+"<qt>File handling error while attempting to save the wallet <b>%1</b>. Error "
+"was <b>%2</b>. Please fix your system configuration, then try again.</qt>"
+msgstr ""
+"<qt><b>%1</b> ھەمياننى ساقلىماقچى بولغاندا ھۆججەت بىر تەرەپ قىلىش خاتالىقى "
+"كۆرۈلدى. خاتالىق <b>%2</b>. سىستېما سەپلىمىسىنى ئوڭشاپ ئاندىن قايتا سىناڭ.</"
+"qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:500
+#, kde-format
+msgid ""
+"<qt>Error when attempting to initialize OpenPGP while attempting to open the "
+"wallet <b>%1</b>. Error code is <b>%2</b>. Please fix your system "
+"configuration, then try again.</qt>"
+msgstr ""
+"<qt>OpenPGP نى دەسلەپلەشتۈرۈپ، <b>%1</b> ھەمياننى ئاچماقچى بولغاندا خاتالىق "
+"كۆرۈلدى. خاتالىق كودى <b>%2</b>. سىستېما سەپلىمىسىنى ئوڭشاپ ئاندىن قايتا "
+"سىناڭ.</qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:522
+#, kde-format
+msgid ""
+"<qt>Error when attempting to initialize OpenPGP while attempting to open the "
+"wallet <b>%1</b>. Please fix your system configuration, then try again.</qt>"
+msgstr ""
+"<qt>OpenPGP نى دەسلەپلەشتۈرۈپ، <b>%1</b> ھەمياننى ئاچماقچى بولغاندا خاتالىق "
+"كۆرۈلدى. سىستېما سەپلىمىسىنى ئوڭشاپ ئاندىن قايتا سىناڭ.</qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:535
+#, kde-format
+msgid "Retry"
+msgstr "قايتا سىنا"
+
+#: kwalletbackend/backendpersisthandler.cpp:540
+#, kde-format
+msgid ""
+"<qt>Error when attempting to decrypt the wallet <b>%1</b> using GPG. If "
+"you're using a SmartCard, please ensure it's inserted then try again."
+"<br><br>GPG error was <b>%2</b></qt>"
+msgstr ""
+"<qt>GPG ئارقىلىق <b>%1</b> ھەميان شىفىرىنى ئاچماقچى بولغاندا خاتالىق "
+"كۆرۈلدى. ئەگەر ئىدراكلىق كارتا ئىشلىتىۋاتقان بولسىڭىز، ئۇنىڭ "
+"قىستۇرۇلغانلىقىنى جەزملەپ ئاندىن قايتا سىناڭ.<br><br>GPG خاتالىقى <b>%2</b></"
+"qt>"
+
+#: kwalletbackend/backendpersisthandler.cpp:544
+#, kde-format
+msgid "kwalletd GPG backend"
+msgstr "kwalletd GPG ئارقا ئۇچى"
+
+#: kwalletbackend/backendpersisthandler.cpp:590
+#, kde-format
+msgid ""
+"<qt>Error when attempting to open the wallet <b>%1</b>. The wallet was "
+"encrypted using the GPG Key ID <b>%2</b> but this key was not found on your "
+"system.</qt>"
+msgstr ""
+"<qt><b>%1</b> ھەمياننى ئاچماقچى بولغاندا خاتالىق كۆرۈلدى. ھەميان GPG "
+"شىفىرلىق ئاچقۇچ كىملىكى <b>%2</b> نى ئىشلىتىپ شىفىرلانغان ئەمما بۇ ئاچقۇچ "
+"سىستېمىڭىزدا تېپىلمىدى.</qt>"
+
+#: kwalletbackend/kwalletbackend.cc:286
+#, kde-format
+msgid "Already open."
+msgstr "ئاللىقاچان ئوچۇق."
+
+#: kwalletbackend/kwalletbackend.cc:288
+#, kde-format
+msgid "Error opening file."
+msgstr "ھۆججەت ئېچىۋاتقاندا خاتالىق كۆرۈلدى."
+
+#: kwalletbackend/kwalletbackend.cc:290
+#, kde-format
+msgid "Not a wallet file."
+msgstr "ھەميان ھۆججەت ئەمەس."
+
+#: kwalletbackend/kwalletbackend.cc:292
+#, kde-format
+msgid "Unsupported file format revision."
+msgstr "قوللىمايدىغان ھۆججەت پىچىمى."
+
+#: kwalletbackend/kwalletbackend.cc:296
+#, kde-format
+msgid "Unknown encryption scheme."
+msgstr "نامەلۇم شىفىرلاش لايىھەسى."
+
+#: kwalletbackend/kwalletbackend.cc:298
+#, kde-format
+msgid "Corrupt file?"
+msgstr "ھۆججەت بۇزۇقمۇ؟"
+
+#: kwalletbackend/kwalletbackend.cc:300
+#, kde-format
+msgid "Error validating wallet integrity. Possibly corrupted."
+msgstr "ھەمياننىڭ پۈتۈنلۈكىنى تەكشۈرۈشتە خاتالىق كۆرۈلدى. بۇزۇلغاندەك قىلىدۇ."
+
+#: kwalletbackend/kwalletbackend.cc:304
+#, kde-format
+msgid "Read error - possibly incorrect password."
+msgstr "ئوقۇشتا خاتالىق كۆرۈلدى - ئىم توغرا ئەمەستەك قىلىدۇ."
+
+#: kwalletbackend/kwalletbackend.cc:306
+#, kde-format
+msgid "Decryption error."
+msgstr "شىفىرسىزلاش خاتالىقى."
+
+#: kwalletbackend/kwalletbackend.cc:486
+#, kde-format
+msgid ""
+"Failed to sync wallet <b>%1</b> to disk. Error codes are:\n"
+"RC <b>%2</b>\n"
+"SF <b>%3</b>. Please file a BUG report using this information to bugs.kde.org"
+msgstr ""
+"<b>%1</b> ھەمياننى دىسكىغا قەدەمداشلىيالمىدى. خاتالىق كودى:\n"
+"RC <b>%2</b>\n"
+"SF <b>%3</b>. بۇ ئۇچۇر ئارقىلىق bugs.kde.org غا كەمتۈكلۈك مەلۇم قىلىڭ"
+
+#: kwalletd/kwalletd.cpp:103
+#, kde-format
+msgid "Migrating the wallet \"%1\". Please provide the password to unlock."
+msgstr "«%1» ھەمياننى كۆچۈرۈۋاتىدۇ. قۇلۇپ ئاچىدىغان ئىمنى تەمىنلەڭ."
+
+#: kwalletd/main.cpp:31
+#, kde-format
+msgid "kwalletd"
+msgstr "kwalletd"
+
+#: kwalletd/main.cpp:33
+#, kde-format
+msgid "A KWallet compatibility service, wrapping upon Secret Service"
+msgstr "KWallet ماسلىشىش مۇلازىمىتى، مەخپىيەت مۇلازىمىتىدە ئورالغان"
+
+#: kwalletd/main.cpp:35
+#, kde-format
+msgid "(C) 2025, The KDE Developers"
+msgstr "(C) 2025,  KDE ئىجادىيەتچىلىرى"
+
+#: kwalletd/main.cpp:37
+#, kde-format
+msgid "Marco Martin"
+msgstr "Marco Martin"
+
+#: kwalletd/main.cpp:37
+#, kde-format
+msgid "Author"
+msgstr "يازغۇچى"
+
+#: kwalletd/secretserviceclient.cpp:262
+#, kde-format
+msgid "Item not found"
+msgstr "تۈر تېپىلمىدى"
+
+#: kwalletd/secretserviceclient.cpp:282
+#, kde-format
+msgid "Could not connect to Secret Service"
+msgstr "مەخپىيەت مۇلازىمىتىگە باغلىنالمىدى"
+
+#: kwalletd/secretserviceclient.cpp:482
+#, kde-format
+msgid "Unable to unlock collectionName %1"
+msgstr "%1 توپلام ئاتىنىڭ قۇلۇپىنى ئاچالمايدۇ"
+
+#: kwalletd/secretserviceclient.cpp:575
+#, kde-format
+msgid "No collections"
+msgstr "توپلام يوق"
+
+#: kwalletd/secretserviceclient.cpp:612 kwalletd/secretserviceclient.cpp:659
+#: kwalletd/secretserviceclient.cpp:762
+#, kde-format
+msgid "No entries"
+msgstr "تۈر يوق"
+
+#: kwalletd/secretserviceclient.cpp:677
+#, kde-format
+msgid "Entry not found, key: %1, folder: %2"
+msgstr "تۈر تېپىلمىدى، ئاچقۇچ: %1، قىسقۇچ: %2"
+
+#: kwalletd/secretserviceclient.cpp:786
+#, kde-format
+msgid "Unable to unlock item"
+msgstr "تۈر قۇلۇپىنى ئاچالمايدۇ"
+
+#: kwalletd/secretserviceclient.cpp:829 kwalletd/secretserviceclient.cpp:947
+#, kde-format
+msgid "Entry to rename not found"
+msgstr "ئات ئۆزگەرتىلىدىغان تۈر تېپىلمىدى"
+
+#: kwalletd/secretserviceclient.cpp:836
+#, kde-format
+msgid "Entry named %1 in folder %2 and wallet %3 already exists."
+msgstr "%2 قىسقۇچتىكى %1 دەپ ئاتالغان تۈر ۋە %3 ھەميان مەۋجۇت."
+
+#: kwalletd/secretserviceclient.cpp:851 kwalletd/secretserviceclient.cpp:866
+#, kde-format
+msgid "Entry to rename incomplete"
+msgstr "ئاتىنى ئۆزگەرتىدىغان تۈر تولۇق ئەمەس"
+
+#: kwalletd/secretserviceclient.cpp:911
+#, kde-format
+msgid "Failed to create SecretValue"
+msgstr "مەخپىيەت قىممىتى قۇرالمىدى"
+
+#~ msgid ""
+#~ "<qt>The application '<b>%1</b>' has requested to create a new wallet "
+#~ "named '<b>%2</b>'. This is used to store sensitive data in a secure "
+#~ "fashion. Please choose the new wallet's type below or click cancel to "
+#~ "deny the application's request.</qt>"
+#~ msgstr ""
+#~ "<qt>«<b>%1</b>» پىروگرامما يېڭى بىر ھەميان «<b>%2</b>» نى قۇرۇشنى تەلەپ "
+#~ "قىلىۋاتىدۇ. بۇ سەزگۈر ئۇچۇرنى بىخەتەر ساقلاشنىڭ بىر خىل ئۇسۇلى. تۆۋەندە "
+#~ "ھەميان تۈرىنى تاللاڭ ياكى «ۋاز كەچ» نى چېكىپ پىروگراممىنىڭ ئىلتىماسنى رەت "
+#~ "قىلىڭ.</qt>"
+
+#~ msgid ""
+#~ "<qt>The application '<b>%1</b>' has requested to open the wallet '<b>%2</"
+#~ "b>'. Please enter the password for this wallet below.</qt>"
+#~ msgstr ""
+#~ "<qt>پىروگرامما «<b>%1</b>» ھەميان «<b>%2</b>» نى ئېچىشنى تەلەپ قىلدى. بۇ "
+#~ "ھەمياننىڭ ئىمىنى كىرگۈزۈڭ.</qt>"
+
+#~ msgid "<b>%1</b> has requested to open a wallet (%2)."
+#~ msgstr "ھەميان (%2) نى ئېچىشنى <b>%1</b> تەلەپ قىلدى."
+
+#~ msgctxt ""
+#~ "Text of a button for switching to the application requesting a password"
+#~ msgid "Switch to %1"
+#~ msgstr "«%1» غا ئالماشتۇر"
+
+#~ msgid ""
+#~ "<qt>The application '<b>%1</b>' has requested to open the KDE wallet. "
+#~ "This is used to store sensitive data in a secure fashion. Please enter a "
+#~ "password to use with this wallet or click cancel to deny the "
+#~ "application's request.</qt>"
+#~ msgstr ""
+#~ "<qt>ھەمياننى ئېچىشنى پىروگرامما «<b>%1</b>» تەلەپ قىلىۋاتىدۇ. بۇ ھەمياندا "
+#~ "ئىنتايىن مۇھىم سانلىق مەلۇماتلار ساقلانغان. ھەمياننى ئىشلىتىش ئۈچۈن ئىم "
+#~ "كىرگۈزۈڭ ياكى «ۋاز كەچ» نى چېكىپ پىروگراممىنىڭ ئىلتىماسنى رەت قىلىڭ.</qt>"
+
+#~ msgid ""
+#~ "<qt>The application '<b>%1</b>' has requested to create a new wallet "
+#~ "named '<b>%2</b>'. Please choose a password for this wallet, or cancel to "
+#~ "deny the application's request.</qt>"
+#~ msgstr ""
+#~ "<qt>يېڭى بىر ھەميان ‹<b>%2</b>› نى قۇرۇشنى پىروگرامما «<b>%1</b>» تەلەپ "
+#~ "قىلىۋاتىدۇ. ھەميانغا ئىم بېكىتىڭ ياكى «ۋاز كەچ» نى چېكىپ پىروگراممىنىڭ "
+#~ "ئىلتىماسنى رەت قىلىڭ.</qt>"
+
+#~ msgid "Allow &Once"
+#~ msgstr "بىرلا قېتىم ئىجازەت(&O)"
+
+#~ msgid "Allow &Always"
+#~ msgstr "ھەمىشە ئىجازەت(&A)"
+
+#~ msgid "&Deny"
+#~ msgstr "رەت قىل(&D)"
+
+#~ msgid "Deny &Forever"
+#~ msgstr "مەڭگۈ رەت قىل(&F)"
+
+#~ msgid "<qt>KDE has requested access to the open wallet '<b>%1</b>'.</qt>"
+#~ msgstr ""
+#~ "<qt>ھەميان «<b>%1</b>» نى ئېچىپ زىيارەت قىلىشنى KDE ئىلتىماس قىلىۋاتىدۇ.</"
+#~ "qt>"
+
+#~ msgid ""
+#~ "<qt>The application '<b>%1</b>' has requested access to the open wallet "
+#~ "'<b>%2</b>'.</qt>"
+#~ msgstr ""
+#~ "<qt>ھەميان ‹<b>%2</b>› نى ئېچىپ زىيارەت قىلىشنى پىروگرامما «<b>%1</b>» "
+#~ "ئىلتىماس قىلىۋاتىدۇ.</qt>"
+
+#~| msgid "KDE Wallet Service"
+#~ msgid "KDE Wallet Migration Agent"
+#~ msgstr "ك د ئې(KDE) ھەميان مۇلازىمىتى"
+
+#~ msgctxt "Text of a button to ignore the open-wallet notification"
+#~ msgid "Ignore"
+#~ msgstr "پەرۋا قىلما"
+
+#~ msgid "&Open"
+#~ msgstr "ئاچ(&O)"
+
+#~ msgid "C&reate"
+#~ msgstr "قۇر(&R)"
+
+#~ msgid "Maintainer"
+#~ msgstr "مەسئۇل كىشى"
