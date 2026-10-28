@@ -74,7 +74,7 @@ void CipherBlockChain::initRegister() {
 int CipherBlockChain::encrypt(void *block, int len)
 {
     if (_cipher && !_reader) {
-        int rc;
+        int rc = 0;
 
         _writer |= 1;
 
@@ -111,7 +111,7 @@ int CipherBlockChain::encrypt(void *block, int len)
 // instead of CBC
 int CipherBlockChain::decryptECB(void *block, int len) {
     if (_cipher && !_writer) {
-        int rc;
+        int rc = 0;
 
         _reader |= 1;
 

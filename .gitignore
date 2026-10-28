@@ -27,3 +27,9 @@ CMakeLists.txt.user*
 .vscode
 /cmake-build*
 .cache
+
+# Native backend workspaces and local evidence
+/build/
+/artifacts/
+__pycache__/
+*.py[cod]

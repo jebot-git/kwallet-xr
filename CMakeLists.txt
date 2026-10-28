@@ -5,6 +5,13 @@ set(KF_DEP_VERSION "6.30.0") # handled by release scripts
 project(KWallet VERSION ${KF_VERSION})
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
+option(DOME_QT_FREE "Build the native Qt-free KWallet/Secret Service backend" ON)
+if(DOME_QT_FREE)
+    include(CTest)
+    add_subdirectory(qt-free)
+    return()
+endif()
+
 include(FeatureSummary)
 find_package(ECM 6.30.0  NO_MODULE)
 set_package_properties(ECM PROPERTIES TYPE REQUIRED DESCRIPTION "Extra CMake Modules." URL "https://invent.kde.org/frameworks/extra-cmake-modules")

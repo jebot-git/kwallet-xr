@@ -1,3 +1,7 @@
+This document describes the retained Qt-based prompt adapter, selected with
+DOME_QT_FREE=OFF. The fork now defaults to the native Qt-free backend; see
+qt-free/README.md.
+
 DomeD credential prompt integration
 
 Default: DOME_FLTK_PROMPTS=ON. The explicit OFF build retains the upstream Qt

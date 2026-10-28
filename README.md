@@ -1,3 +1,13 @@
+# DomeD KWallet fork
+
+The default build is the [Qt-free native backend](qt-free/README.md), retaining
+KWallet's public D-Bus API and encrypted wallet storage. The upstream Qt build
+is an explicit `-DDOME_QT_FREE=OFF` option. Existing live wallets/services were
+not replaced during development. See the native README for tested compatibility,
+known parity differences, build/staging and PAM/activation deployment details.
+
+---
+
 # KWallet Framework
 
 Safe desktop-wide storage for passwords

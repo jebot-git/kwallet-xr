@@ -1,0 +1,4 @@
+[D-BUS Service]
+Name=@SERVICE_NAME@
+Exec=@CMAKE_INSTALL_FULL_LIBEXECDIR@/domed/dome-walletd
+SystemdService=dome-wallet.service

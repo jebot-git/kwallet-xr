@@ -1,0 +1,12 @@
+[Unit]
+Description=DomeD Qt-free wallet and Secret Service backend
+
+[Service]
+Type=dbus
+BusName=org.freedesktop.secrets
+ExecStart=@CMAKE_INSTALL_FULL_LIBEXECDIR@/domed/dome-walletd
+UMask=0077
+NoNewPrivileges=true
+LimitCORE=0
+TimeoutStopSec=5
+KillMode=control-group
