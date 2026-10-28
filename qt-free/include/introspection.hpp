@@ -20,7 +20,7 @@ inline const char* xml0 = R"DOME(<interface name="org.kde.KWallet">
     <signal name="walletClosed">
       <arg name="wallet" type="s" direction="out" />
     </signal>
-    
+
     <signal name="walletClosed">
       <arg name="handle" type="i" direction="out" />
       <annotation name="org.freedesktop.DBus.Deprecated" value="true" />
@@ -442,7 +442,7 @@ inline const char* xml5 = R"DOME(<interface name="org.freedesktop.Secret.Prompt"
 		<method name="Dismiss">
 		</method>
 
-		
+
 		<signal name="Completed">
 			<arg name="dismissed" type="b" />
 			<arg name="result" type="v" />
@@ -458,7 +458,7 @@ inline const char* xml6 = R"DOME(<interface name="org.freedesktop.Secret.Session
 )DOME";
 inline const char* xml7 = R"DOME(<interface name="org.freedesktop.impl.portal.Secret">
 
-    
+
     <method name="RetrieveSecret">
       <annotation name="org.gtk.GDBus.C.Name" value="retrieve_secret" />
       <annotation name="org.gtk.GDBus.C.UnixFD" value="true" />
