@@ -1,5 +1,28 @@
 # Native backend validation — 2026-10-28
 
+## Process authorization update — 2026-11-11
+
+Release builds and all four native CTest groups pass, including actual FLTK
+dialogs on a private Xvfb. The private-bus API test now uses independent client
+processes as well as multiple connections within one process. It verifies:
+
+- KWallet and Secret Service approval survives a reconnect by the same process.
+- A separate process cannot inherit approval by supplying the same app name.
+- An observed executable change at the same PID and a new process require approval.
+- Locking the wallet revokes process grants; old secret sessions and wallet
+  handles remain bound to their original connection.
+- Existing cancellation, encrypted transport/storage, restart persistence,
+  portal restrictions and PAM tests still pass. The staged release retains a
+  Qt/KDE-free dependency graph.
+
+Xvfb/xkbcomp were taken from existing local test dependencies inside a temporary
+Bubblewrap mount; no system packages or active user services were replaced.
+Process approval requires a bus-supplied `ProcessFD`; older buses retain the
+connection-scoped policy described in README.md. No persistent application
+allow-list or cross-process executable approval is introduced.
+
+## Original backend validation
+
 Validated on Nobara/Fedora 44, x86-64. All wallets, passwords, keys, buses and
 displays used by tests are disposable; live user wallets were not opened.
 

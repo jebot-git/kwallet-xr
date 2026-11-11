@@ -505,11 +505,10 @@ bool Secrets::call(Call& c)
                 } catch (const Error&) {
                     wallet = item_ref(path).wallet;
                 }
-                auto& s = backend.state(wallet);
                 if (m == "Lock") {
                     backend.lock(wallet);
                     done.push_back(path);
-                } else if (s.wallet && s.owners.contains(c.sender))
+                } else if (backend.authorized(wallet, c.sender))
                     done.push_back(path);
                 else
                     pending.push_back(path);

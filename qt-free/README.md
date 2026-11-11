@@ -36,9 +36,26 @@ keep using their installed KF6Wallet client library in their own process. The
 native default does not rebuild that library. The old external-Secret-Service
 migration/bridge modes are not implemented by this self-contained provider;
 use the explicit legacy build for those modes. Existing saved application
-allow-lists are not automatically imported: the native backend asks for approval
-when another bus caller first accesses an already unlocked wallet. This is a
-stricter authorization policy rather than an implicit grant to every client.
+allow-lists are not automatically imported. For an already unlocked wallet,
+approval is retained for the verified calling process until that wallet locks,
+the process exits, or an executable change is observed. Reconnecting to D-Bus
+from the same process does not require repeated approval.
+
+The daemon obtains `UnixUserID`, `ProcessID` and `ProcessFD` from the bus's
+`GetConnectionCredentials`; the bus-supplied Linux pidfd pins the process
+lifetime and prevents numeric PID reuse from inheriting approval. It verifies
+the desktop UID and executable device/inode, rechecks after a dialog, and shows
+the verified executable and PID in the request. A caller-provided application
+name is descriptive only. Separate processes, including another instance of
+the same executable, need their own approval. Scripts/plugins within a process
+share its approval; executable identity does not distinguish them.
+This does not add permanent executable/app-name allow-lists.
+See the [D-Bus credential specification](https://dbus.freedesktop.org/doc/dbus-specification.html#bus-messages-get-connection-credentials).
+
+On buses without `ProcessFD`, or when a sandbox prevents executable inspection,
+approval remains scoped to the original connection. There is no numeric-PID
+fallback for shared approval. Handles, secret sessions and prompts remain
+bound to their original bus caller even when process approval is shared.
 
 ## Build and stage
 
@@ -73,7 +90,7 @@ normal location is `$XDG_DATA_HOME/kwalletd` (the usual XDG fallback applies).
 
 The existing PAM protocol `--pam-login HASH_FD ENV_FD` is supported. The hash
 travels through its inherited pipe and the environment handoff verifies its
-Unix peer UID. A PAM-unlocked wallet still requires approval for a new caller.
+Unix peer UID. A PAM-unlocked wallet still requires approval for a new process.
 A distributor's PAM module may have a compiled-in daemon path: deploying the
 new activation files alone does not change it. The matching PAM launch path
 must be configured when replacing an installed package. No host PAM setup or

@@ -4,7 +4,7 @@
 %global __os_install_post %{nil}
 Name: domed-kwallet-backend
 Version: 6.30.0
-Release: 2.dome
+Release: 3.dome
 Summary: Qt-free KWallet and Secret Service backend with DomeD FLTK prompts
 License: LGPL-2.0-or-later AND LGPL-2.0-only AND BSD-3-Clause AND CC0-1.0
 URL: https://github.com/jebot-git/kwallet-xr
@@ -46,6 +46,11 @@ cp -a usr %{buildroot}/
 %license /usr/share/licenses/kwallet-dome
 
 %changelog
+* Wed Nov 11 2026 de-xr maintainers <noreply@example.invalid> - 6.30.0-3.dome
+- Retain wallet approval across connections from the same verified process
+- Bind grants to bus-supplied process descriptors and executable identity
+- Revoke grants on wallet lock, process exit or observed executable change
+
 * Wed Oct 28 2026 de-xr maintainers <noreply@example.invalid> - 6.30.0-2.dome
 - Replace Qt backend with native KWallet/Secret Service provider and FLTK prompts
 - Retain existing daemon launch paths and encrypted wallet format

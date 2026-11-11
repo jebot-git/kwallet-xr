@@ -24,7 +24,7 @@ async def main():
   busproc=subprocess.Popen(['dbus-daemon','--session','--nofork','--print-address=1'],env=env,stdout=subprocess.PIPE,stderr=subprocess.DEVNULL,text=True)
   address=busproc.stdout.readline().strip();assert address;env['DBUS_SESSION_BUS_ADDRESS']=address
   a=await MessageBus(bus_address=address,negotiate_unix_fd=True).connect();b=await MessageBus(bus_address=address).connect()
-  daemon=None;log=(path/'daemon.log').open('w')
+  daemon=None;peers=[];log=(path/'daemon.log').open('w')
   def queue(*responses):
    p=path/'prompt-queue.json';p.write_text(json.dumps(list(responses)));p.chmod(0o600)
   def confirm(cancel=False):return {'command':'CONFIRM','cancel':cancel}
@@ -36,6 +36,22 @@ async def main():
    assert result.message_type!=MessageType.ERROR,(member,result.error_name,result.body)
    return result.body
   async def wallet(member,signature='',body=(),bus=a,error=False):return await rpc(member,signature,body,dest='org.kde.kwalletd6',object='/modules/kwalletd6',interface='org.kde.KWallet',bus=bus,error=error)
+  async def peer_start():
+   peer=await asyncio.create_subprocess_exec(sys.executable,str(Path(__file__).with_name('caller-client.py')),address,env=dict(os.environ,PYTHONPATH=os.pathsep.join(sys.path)),stdin=asyncio.subprocess.PIPE,stdout=asyncio.subprocess.PIPE,stderr=log)
+   peers.append(peer)
+   ready=json.loads(await asyncio.wait_for(peer.stdout.readline(),5));assert ready['pid']==peer.pid
+   return peer
+  async def peer_command(peer,request):
+   peer.stdin.write((json.dumps(request)+'\n').encode());await peer.stdin.drain()
+   return json.loads(await asyncio.wait_for(peer.stdout.readline(),8))
+  async def peer_wallet(peer,member,signature='',body=()):
+   result=await peer_command(peer,dict(destination='org.kde.kwalletd6',path='/modules/kwalletd6',interface='org.kde.KWallet',member=member,signature=signature,body=list(body)))
+   assert not result['error'],result
+   return result['body']
+  async def peer_secret(peer,member,signature='',body=(),object=ROOT,interface=SI,error=False):
+   result=await peer_command(peer,dict(destination=S,path=object,interface=interface,member=member,signature=signature,body=list(body)))
+   assert bool(result['error'])==error,result
+   return result
   async def launch():
    nonlocal daemon
    daemon=subprocess.Popen([str(BINARY),'--storage-dir',str(path/'wallets')],env=env,stdout=log,stderr=log)
@@ -79,9 +95,31 @@ async def main():
    assert (await wallet('writeEntry','issays',[h,'Passwords','other',b'abc','test-app']))==[0]
    await wallet('readPassword','isss',[h,'Passwords','unicode','test-app'],bus=b,error=True)
    await wallet('readPassword','isss',[h,'Passwords','unicode','spoofed'],error=True)
-   queue(confirm(True));assert (await wallet('open','sxs',['fixture',0,'test-app'],bus=b))[0]<0
-   queue(confirm());hb=(await wallet('open','sxs',['fixture',0,'second-app'],bus=b))[0];assert hb>h
+   # A second connection of the same verified process reuses approval. Handles
+   # themselves remain connection/app-bound, as the spoof checks above assert.
+   queue();hb=(await wallet('open','sxs',['fixture',0,'second-app'],bus=b))[0];assert hb>h
    assert (await wallet('readPassword','isss',[hb,'Passwords','unicode','second-app'],bus=b))==['příliš 日本語 🔒']
+   peer=await peer_start()
+   queue(confirm(True));assert (await peer_wallet(peer,'open','sxs',['fixture',0,'test-app']))[0]<0
+   assert json.loads((path/'prompt-queue.json').read_text())==[]
+   queue(confirm());ph=(await peer_wallet(peer,'open','sxs',['fixture',0,'test-app']))[0];assert ph>0
+   assert json.loads((path/'prompt-queue.json').read_text())==[]
+   queue();await peer_command(peer,{'reconnect':True})
+   ph=(await peer_wallet(peer,'open','sxs',['fixture',0,'test-app']))[0];assert ph>0
+   assert (await peer_wallet(peer,'readPassword','isss',[ph,'Passwords','unicode','test-app']))==['příliš 日本語 🔒']
+   # exec changes the executable inode without changing the PID. Its old
+   # process approval must be revoked before serving the new connection.
+   import shutil
+   replacement=path/'other-python';shutil.copyfile(Path(sys.executable).resolve(),replacement);replacement.chmod(0o700)
+   ready=await peer_command(peer,{'exec':str(replacement)});assert ready['pid']==peer.pid
+   queue(confirm(True));assert (await peer_wallet(peer,'open','sxs',['fixture',0,'test-app']))[0]<0
+   assert json.loads((path/'prompt-queue.json').read_text())==[]
+   peer.terminate();await peer.wait()
+   peer=await peer_start()
+   queue(confirm(True));assert (await peer_wallet(peer,'open','sxs',['fixture',0,'test-app']))[0]<0
+   assert json.loads((path/'prompt-queue.json').read_text())==[]
+   peer.terminate();await peer.wait()
+   print('PASS process approval across reconnects; separate process/app-name spoof, exec and restart require approval',flush=True)
    assert (await wallet('renameEntry','issss',[h,'Passwords','other','renamed','test-app']))==[0]
    assert (await wallet('hasEntry','isss',[h,'Passwords','renamed','test-app']))==[True]
    assert (await wallet('entryType','isss',[h,'Passwords','renamed','test-app']))==[2]
@@ -128,6 +166,16 @@ async def main():
    await rpc('Get','s',['wrong signature'],interface=P,error=True)
    await rpc('SetSecret','(oayays)',[[sid,b'bad iv',encrypted,'application/octet-stream']],object=entry,interface=II,error=True)
    print('PASS plain/encrypted Secret Service sessions, independent DH/AES verification and session-owner isolation',flush=True)
+   peer=await peer_start()
+   ps=(await peer_secret(peer,'OpenSession','sv',['plain',{'variant':'s','value':''}]))['body'][1]
+   queue(confirm());assert (await peer_secret(peer,'GetSecret','o',[ps],object=entry,interface=II))['body'][0][2]==list(b'changed\0binary')
+   assert json.loads((path/'prompt-queue.json').read_text())==[]
+   queue();await peer_command(peer,{'reconnect':True})
+   assert (await peer_secret(peer,'GetSecret','o',[ps],object=entry,interface=II,error=True))['error']=='org.freedesktop.Secret.Error.NoSession'
+   ps=(await peer_secret(peer,'OpenSession','sv',['plain',{'variant':'s','value':''}]))['body'][1]
+   assert (await peer_secret(peer,'Unlock','ao',[[coll]]))['body']==[[coll],'/']
+   assert (await peer_secret(peer,'GetSecret','o',[ps],object=entry,interface=II))['body'][0][2]==list(b'changed\0binary')
+   print('PASS Secret Service reconnect reuses process approval while old sessions remain invalid',flush=True)
    await rpc('Lock','ao',[[coll]]);locked_error=await rpc('GetSecret','o',[session],object=entry,interface=II,error=True);assert locked_error.error_name=='org.freedesktop.Secret.Error.IsLocked'
    assert (await rpc('Get','ss',[CI,'Locked'],object=coll,interface=P))[0].value
    assert (await rpc('SearchItems','a{ss}',[{'application':'test'}]))==[[],[entry]]
@@ -153,6 +201,11 @@ async def main():
    finally:a.remove_message_handler(completed)
    unlocked,request=await rpc('Unlock','ao',[[coll]]);result=await prompted(request,[pin('replacement-password')]);assert not result[0] and result[1].value==[coll]
    assert not (await rpc('Get','ss',[CI,'Locked'],object=coll,interface=P))[0].value
+   pending=(await peer_secret(peer,'Unlock','ao',[[coll]]))['body'];assert pending[0]==[] and pending[1]!='/'
+   queue(confirm(True));await peer_secret(peer,'GetSecret','o',[ps],object=entry,interface=II,error=True)
+   assert json.loads((path/'prompt-queue.json').read_text())==[]
+   peer.terminate();await peer.wait()
+   print('PASS wallet locking revokes every process approval',flush=True)
    print('PASS Secret Service lock/search/unlock prompts and prompt-owner isolation',flush=True)
    await a.request_name('org.freedesktop.portal.Desktop');assert (await rpc('Get','ss',['org.freedesktop.impl.portal.Secret','version'],dest='org.freedesktop.impl.portal.desktop.kwallet',object='/org/freedesktop/portal/desktop',interface=P))[0].value==1
    readfd,writefd=os.pipe()
@@ -198,6 +251,9 @@ async def main():
   except BaseException:
    log.flush();print((path/'daemon.log').read_text(),file=sys.stderr);raise
   finally:
+   for peer in peers:
+    if peer.returncode is None:
+     peer.terminate();await peer.wait()
    if daemon is not None and daemon.poll() is None:
     daemon.terminate()
     try:daemon.wait(timeout=4)

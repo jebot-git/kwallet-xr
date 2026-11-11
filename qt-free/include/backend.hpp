@@ -10,11 +10,22 @@
 #include <set>
 namespace dw {
 using Json = nlohmann::json;
+// A bus-supplied pidfd pins one process lifetime; executable identity prevents
+// an observed exec from retaining approval. Never trust the client's app string.
+struct CallerProcess {
+    int fd = -1;
+    unsigned pid = 0;
+    uint64_t device = 0, inode = 0;
+    std::string executable;
+    ~CallerProcess();
+    bool valid() const;
+};
 struct State {
     std::chrono::steady_clock::time_point last_access = std::chrono::steady_clock::now();
     std::string name;
     std::unique_ptr<Wallet> wallet;
     std::set<std::string> owners;
+    std::set<std::shared_ptr<CallerProcess>> processes;
     Json metadata;
 };
 struct Handle {
@@ -24,6 +35,7 @@ struct Backend {
     std::filesystem::path root;
     std::map<std::string, State> states;
     std::map<int, Handle> handles;
+    std::map<unsigned, std::shared_ptr<CallerProcess>> callers;
     int next_handle = 1;
     GDBusConnection* connection = nullptr;
     std::function<void(const std::string&, const std::string&)> changed;
@@ -33,6 +45,9 @@ struct Backend {
     void idle_close();
     std::string default_wallet(bool local = false) const;
     State& state(const std::string&);
+    std::shared_ptr<CallerProcess> caller(const std::string&);
+    void prune_callers();
+    bool authorized(const std::string&, const std::string&);
     State& unlock(const std::string&, const std::string&, const std::string&);
     State& access(int, const std::string&, const std::string&);
     int open(const std::string&, const std::string&, const std::string&);
